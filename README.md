@@ -27,3 +27,7 @@
 消息模块
 用户模块
 基本上分为这些模块，那么我们设计数据库的时候，也是根据功能模块来的。
+部分展示：
+![Screenshot_2022-07-14-19-07-22-93_decb0a47a2e322548f703958265c1ba7](https://user-images.githubusercontent.com/77711857/178972642-eda57617-902b-498d-8c94-80f51a48bbb0.jpg)
+![Screenshot_2022-07-14-19-07-34-19_decb0a47a2e322548f703958265c1ba7](https://user-images.githubusercontent.com/77711857/178972694-b60a63e3-d2aa-4930-8f91-bae013b2fe71.jpg)
+![Screenshot_2022-07-14-19-07-40-20_decb0a47a2e322548f703958265c1ba7](https://user-images.githubusercontent.com/77711857/178972704-11973f84-8b40-4817-a2e1-4a1ce363e57a.jpg)
