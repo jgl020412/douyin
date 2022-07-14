@@ -1,0 +1,55 @@
+server:
+  port: ${port:8099}                          # 服务访问端口号
+
+spring:
+  datasource:                                 # MySQL以及MariDB，
+    type: com.zaxxer.hikari.HikariDataSource  # 数据源的类型，可以更改为其他的数据源配置，比如druid
+    driver-class-name: com.mysql.jdbc.Driver  # mysql/MariaDB 的数据库驱动类名称
+    url: jdbc:mysql://0.0.0.0:3306/douyin?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    # 包括IP地址和端口号，以及一些相关设置
+    username: root                            # 数据库的用户名
+    password: root                            # 数据库的密码
+    hikari:
+      connection-timeout: 30000               # 等待连接池分配连接的最大时间（毫秒），超过这个时长还没有可用的连接，则会抛出SQLException
+      minimum-idle: 5                         # 最小连接数
+      maximum-pool-size: 20                   # 最大连接数
+      auto-commit: true                       # 自动提交
+      idle-timeout: 600000                    # 连接超时的最大时长（毫秒），超时则会被释放（retired）
+      pool-name: DataSourceHikariCP           # 连接池的名字
+      max-lifetime: 18000000                  # 连接池的最大生命时长（毫秒），超时则会被释放（retired）
+      connection-test-query: SELECT 1
+  redis:                                      # redis配置，用于缓存一些信息
+    host: 0.0.0.0                             # 配置redis的主机IP
+    port: 6379                                # redis的端口号，默认是6379
+    database: 0                               # 使用哪一个库，0~15，共16个库，默认使用第0个
+    password: 0                               # redis密码
+  data:
+    mongodb:                                  # mongodb配置，用于存放一些不重要的信息
+      uri: mongodb://root:root@0.0.0.0:27017  # 包括用户名，用户密码和主机IP以及端口号（默认是27017）
+      database: douyin                        # 数据库的名字
+  rabbitmq:                                   # rabbitmq配置，用于异步解耦
+    host: 0.0.0.0                             # 主机IP
+    port: 5672                                # 端口号
+    username: root                            # 用户名称
+    password: root                            # 用户密码
+    virtual-host: douyin                      # 使用的虚拟节点
+  cloud:
+    nacos:                                    # nacos配置，用于服务注册以及配置中心
+      discovery:
+        server-addr: 0.0.0.0:8848             # nacos 所在地址
+
+# 打开监控
+management:
+  endpoint:
+    web:
+      exposure:
+        include: '*'
+
+minio:                                    # MinIO配置，分布式存储文件
+  endpoint: http://0.0.0.0:9000           # MinIO服务地址
+  fileHost: http://0.0.0.0:9000           # 文件地址host
+  bucketName: douyin                      # 存储桶bucket名称
+  accessKey: root                         # 用户名
+  secretKey: root                         # 密码
+  imgSize: 1024                           # 图片大小限制，单位：m
+  fileSize: 1024                          # 文件大小限制，单位：m
