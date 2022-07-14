@@ -1,0 +1,162 @@
+<style>
+.page {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: #181b27;
+}
+
+.line {
+	height: 1rpx;
+	background-color: #393a41;
+	width: 750rpx;
+}
+
+.place-box {
+	background-color: #4a4c52;
+}
+.place-box-touched {
+	background-color: #6d6b6b;
+}
+
+.right-arrow {
+	width: 32rpx;
+	height: 32rpx;
+	margin-left: 20rpx;
+}
+
+.logout {
+	background-color: #4a4c52;
+}
+.logout-touched {
+	background-color: #6d6b6b;
+}
+.fengjianyingyue {
+	width: 250rpx;
+	border-width: 1rpx;
+	border-color: #FFFFFF;
+	border-radius: 10rpx;
+}
+.fengjianyingyue-name {
+	width: 200rpx;
+	margin-top: 26rpx;
+	opacity: 0.8;
+}
+.introduce {
+	color: #F1F1F1;
+	font-size: 26rpx;
+	font-weight: 300;
+	width: 440rpx;
+}
+.course {
+	width: 330rpx;
+	border-radius: 5px;
+}
+</style>
+<template>
+	<view class="page">
+		<!-- <view class="line"></view> -->
+		
+		<scroll-view scroll-y="true">
+			<view style="display: flex;flex-direction: row;justify-content: space-between;padding: 20rpx;">
+				<view style="display: flex;flex-direction: column;justify-content: center;">
+					<image src="/static/imooc/lee.jpeg" mode="widthFix" class="fengjianyingyue" style="align-self: center;"></image>
+					<image src="/static/imooc/fengjianyingyue.png" mode="widthFix" class="fengjianyingyue-name" style="align-self: center;"></image>
+				</view>
+
+				<view>
+					<text class="introduce">	物流科技公司部门经理，近10年开发和技术管理经验。主要从事后端技术和架构领域，有丰富的电商平台与物流平台核心系统的架构设计和开发经验。 拥有丰富的大型项目开发经验，授课风格诙谐幽默，讲解到位细致。</text>
+					<text class="introduce">	近20万的学生学习人数，学生入职公司有： 百度云盘，阿里，腾讯云，字节跳动，金山，网易，OPPO，新浪微博，华为，货拉拉，58同城，海信，蘑菇街，金蝶 等。</text>
+				</view>
+			</view>
+
+			<view style="display: flex;flex-direction: row;justify-content: center;margin-top: 20rpx;">
+				<image src="/static/imooc/course-javaarchitect.png" mode="widthFix" class="course" style="width: 380rpx;"></image>
+			</view>
+
+			<view style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 20rpx;padding-left: 30rpx;padding-right: 30rpx;">
+				<image src="/static/imooc/course-pm.png" mode="widthFix" class="course" style=""></image>
+				<image src="/static/imooc/course-springcloud.png" mode="widthFix" class="course" style=""></image>
+			</view>
+			
+			<view style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 20rpx;padding-left: 30rpx;padding-right: 30rpx;">
+				<image src="/static/imooc/course-netty.png" mode="widthFix" class="course" style=""></image>
+				<image src="/static/imooc/course-zookeeper.png" mode="widthFix" class="course" style=""></image>
+			</view>
+
+			<!-- <view style="display: flex;flex-direction: row;justify-content: center;margin-top: 20rpx;">
+				<image src="/static/imooc/lee-qrcode.png" mode="widthFix" class="course" style="width: 380rpx;"></image>
+			</view> -->
+			
+			<view 
+				:class="{'logout':!logoutTouched, 'logout-touched': logoutTouched}" 
+				@touchstart="touchstartLogout()"
+				@touchend="touchendLogout()"
+				@click="logout()"
+				style="margin-top: 20rpx;padding-left: 30rpx;padding-right: 30rpx;width: 750rpx;height: 120rpx;display: flex;flex-direction: row;justify-content: center;">
+				
+				<text style="color: #FFFFFF;align-self: center;font-size: 15px;">退出登录</text>
+
+			</view>
+		</scroll-view>
+		
+	</view>
+</template>
+
+<script>
+	var app = getApp();
+	export default {
+		components: {
+		},
+		data() {
+			return {
+				logoutTouched: false
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			touchstartLogout() {
+				this.logoutTouched = true;
+			},
+			touchendLogout() {
+				this.logoutTouched = false;
+			},
+			logout() {
+				var me = this;
+				var userId = getApp().getUserInfoSession().id;
+				
+				var serverUrl = app.globalData.serverUrl;
+				uni.request({
+					method: "POST",
+					url: serverUrl + "/passport/logout?userId=" + userId,
+					success(result) {
+						var status = result.data.status;
+						if (status == 200) {
+							getApp().clearUserInfo();
+							// 在登录登出后，都需要重新刷新首页list，目的为了刷新关注点赞状态
+							// uni.setStorageSync("needRefreshIndexVlogList", "1");
+							// uni.switchTab({
+							// 	url: "../index/index"
+							// })
+							uni.reLaunch({
+								url: "../index/index"
+							})
+						} else if (status != 200) {
+							uni.showToast({
+								title: result.data.msg,
+								icon: "none"
+							});
+						}
+						
+					}
+				});
+				
+				
+			}
+		}
+	}
+</script>
+
