@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjgl.mapper.FansMapperCustom" >
+
+    <select id="queryFansList" parameterType="map" resultType="com.atjgl.vo.FansVO">
+        SELECT
+            u.id as fanId,
+            u.nickname as nickname,
+            u.face as face
+        FROM
+            fans f
+        LEFT JOIN
+            users u
+        ON
+            u.id = f.fan_id
+        WHERE
+            f.vloger_id = #{paramMap.myId}
+        ORDER BY
+            u.nickname
+        ASC
+    </select>
+    <select id="queryFollowList" resultType="com.atjgl.vo.VlogerVO" parameterType="map">
+        SELECT
+            u.id as vlogerId,
+            u.nickname as nickname,
+            u.face as face
+        FROM
+            fans f
+        LEFT JOIN
+            users u
+        ON
+            u.id = f.vloger_id
+        WHERE
+            f.fan_id = #{paramMap.myId}
+        ORDER BY
+            u.nickname
+        ASC
+    </select>
+
+</mapper>
